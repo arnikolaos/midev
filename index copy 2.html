@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MI DEVELOPMENT</title>
+  <meta name="description" content="MI Development AI Division — engineered intelligence, software systems, data architecture, automation, real-time compute, digital twins. Brutalist hacker interface.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=VT323&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    :root {
+      --bg: #000000;
+      --fg: #f0f0f0;
+      --cyan: #00f6ff;
+      --lime: #c3ff00;
+      --magenta: #ff00c8;
+      --border: #111;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'IBM Plex Mono', 'VT323', monospace;
+      letter-spacing: 0.06em;
+      cursor: none;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+    canvas#neuralCanvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      filter: drop-shadow(0 0 6px rgba(0, 246, 255, 0.35));
+    }
+    .scanlines {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.05),
+        rgba(255,255,255,0.05) 1px,
+        transparent 2px,
+        transparent 3px
+      );
+      opacity: 0.06;
+      mix-blend-mode: screen;
+      z-index: 1;
+    }
+    .cursor {
+      position: fixed;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--cyan);
+      border-radius: 2px;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 100;
+      box-shadow: 0 0 8px rgba(0, 246, 255, 0.6);
+      mix-blend-mode: screen;
+    }
+    .layout {
+      position: relative;
+      z-index: 2;
+    }
+    section {
+      min-height: 80vh;
+      padding: 120px 8vw;
+    }
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
+    }
+    .eyebrow {
+      color: var(--cyan);
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(32px, 4vw, 56px);
+      text-transform: uppercase;
+      line-height: 1.1;
+      color: var(--fg);
+      text-shadow: 0 0 12px rgba(0, 246, 255, 0.25);
+    }
+    .subline {
+      font-size: 1.1rem;
+      color: var(--lime);
+      opacity: 0.9;
+      min-height: 1.3em;
+      position: relative;
+    }
+    .intro {
+      max-width: 720px;
+      color: var(--fg);
+      opacity: 0.8;
+      line-height: 1.7;
+      text-transform: lowercase;
+    }
+    .glitch:hover {
+      animation: glitch 0.35s steps(2, end) infinite;
+      text-shadow:
+        0 0 8px var(--cyan),
+        0 0 12px var(--magenta);
+    }
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(2px, -1px); }
+      60% { transform: translate(-1px, -2px); }
+      80% { transform: translate(1px, 1px); }
+      100% { transform: translate(0); }
+    }
+    .mission-block {
+      border: 2px solid var(--border);
+      padding: 32px;
+      max-width: 760px;
+      background: rgba(0, 0, 0, 0.6);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .mission-block:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 18px rgba(0, 246, 255, 0.2);
+    }
+    .label {
+      color: var(--magenta);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 40px;
+    }
+    .service-card {
+      border: 3px solid var(--border);
+      padding: 24px;
+      text-transform: lowercase;
+      transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+      background: rgba(0, 0, 0, 0.75);
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(0, 246, 255, 0.08), transparent);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .service-card:hover {
+      border-color: var(--cyan);
+      transform: translateY(-4px);
+      box-shadow: 0 0 14px rgba(0, 246, 255, 0.25);
+    }
+    .service-card:hover::after {
+      opacity: 1;
+    }
+    .service-title {
+      color: var(--cyan);
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .service-meta {
+      color: var(--fg);
+      opacity: 0.8;
+      line-height: 1.5;
+    }
+    #contact {
+      padding-bottom: 140px;
+    }
+    .contact-block {
+      border: 2px solid var(--border);
+      padding: 32px;
+      max-width: 520px;
+      position: relative;
+    }
+    .contact-block:hover {
+      border-color: var(--lime);
+      box-shadow: 0 0 16px rgba(195, 255, 0, 0.3);
+    }
+    .caret {
+      display: inline-block;
+      width: 10px;
+      height: 1.1em;
+      background: var(--cyan);
+      margin-left: 6px;
+      animation: blink 1s steps(2, start) infinite;
+    }
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .contact-btn {
+      margin-top: 10px;
+      padding: 10px 14px;
+      background: transparent;
+      border: 2px solid var(--cyan);
+      color: var(--fg);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      cursor: pointer;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .contact-btn:hover {
+      border-color: var(--magenta);
+      box-shadow: 0 0 14px rgba(255, 0, 200, 0.35);
+    }
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(4px);
+      z-index: 10;
+    }
+    .modal.open { display: flex; }
+    .modal-card {
+      background: rgba(0,0,0,0.9);
+      border: 2px solid var(--cyan);
+      padding: 28px;
+      width: min(520px, 90vw);
+      box-shadow: 0 0 18px rgba(0, 246, 255, 0.25);
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      border: 1px solid var(--magenta);
+      color: var(--fg);
+      padding: 6px 10px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    .modal-close:hover {
+      box-shadow: 0 0 12px rgba(255, 0, 200, 0.4);
+    }
+    .modal h3 {
+      margin: 0 0 12px 0;
+      color: var(--cyan);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    .modal form {
+      display: grid;
+      gap: 14px;
+    }
+    .modal label {
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--lime);
+    }
+    .modal input,
+    .modal textarea {
+      width: 100%;
+      background: #050505;
+      border: 2px solid var(--border);
+      color: var(--fg);
+      padding: 12px;
+      font-family: 'IBM Plex Mono', 'VT323', monospace;
+      letter-spacing: 0.05em;
+    }
+    .modal input:focus,
+    .modal textarea:focus {
+      outline: none;
+      border-color: var(--cyan);
+      box-shadow: 0 0 10px rgba(0, 246, 255, 0.2);
+    }
+    .modal button[type="submit"] {
+      border: 2px solid var(--cyan);
+      background: transparent;
+      color: var(--fg);
+      padding: 10px 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      cursor: pointer;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .modal button[type="submit"]:hover {
+      border-color: var(--magenta);
+      box-shadow: 0 0 14px rgba(255, 0, 200, 0.35);
+    }
+    .status {
+      font-size: 0.9rem;
+      color: var(--magenta);
+      min-height: 1.2em;
+    }
+    @media (max-width: 720px) {
+      section { padding: 100px 7vw; }
+      .services-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+      html, body { cursor: default; }
+      .cursor { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="neuralCanvas"></canvas>
+  <div class="scanlines"></div>
+  <div class="cursor" id="cursor"></div>
+  <main class="layout">
+    <section id="hero">
+      <div class="eyebrow glitch">mi development // ai division</div>
+      <h1>> MI.DEV // AI / SOFTWARE / SYSTEMS</h1>
+      <div class="subline" id="typewriter" aria-live="polite">_</div>
+      <p class="intro">MI Development builds AI systems, real-time software, and data-driven tools for high-performance operations. We focus on automation, analysis, research, and optimization — delivering custom intelligence for companies, corporations, and organizations that need more than off-the-shelf solutions.</p>
+    </section>
+
+    <section id="mission">
+      <div class="mission-block reveal">
+        <div class="label">:: purpose</div>
+        <p>we build custom intelligence,<br>autonomous systems,<br>architectural computation,<br>and cross-reality tools.</p>
+        <p>ai. software. analysis. automation.</p>
+      </div>
+    </section>
+
+    <section id="services">
+      <div class="eyebrow glitch">capabilities</div>
+      <h2 class="service-title">system capabilities</h2>
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <div class="service-title">ai systems</div>
+          <div class="service-meta">custom llms, agents, automation</div>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-title">software engineering</div>
+          <div class="service-meta">apps, platforms, apis</div>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-title">data intelligence</div>
+          <div class="service-meta">predictive analytics, visualizations</div>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-title">real-time compute</div>
+          <div class="service-meta">ue5 tools, pipelines, simulations</div>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-title">metaverse & digital twins</div>
+          <div class="service-meta">ue/blender integrations</div>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-title">custom architectures</div>
+          <div class="service-meta">infrastructure & devops</div>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-title">saas</div>
+          <div class="service-meta">productized platforms, secure multi-tenant delivery</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="contact-block reveal">
+        <div class="label">> establish connection</div>
+        <p>mi-development / ai division</p>
+        <p class="glitch">send a message<span class="caret"></span></p>
+        <button class="contact-btn" id="open-contact">> open secure channel</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal" id="contact-modal" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" id="close-contact">close</button>
+      <h3>> send transmission</h3>
+      <form id="contact-form">
+        <label for="name">name</label>
+        <input type="text" id="name" name="from_name" required>
+
+        <label for="email">email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="message">message</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+
+        <button type="submit">dispatch</button>
+        <div class="status" id="status"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('neuralCanvas');
+    const ctx = canvas.getContext('2d');
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    const nodeCount = 80;
+    const nodes = [];
+    const codeFragments = ["function sync()", "agent.run()", "lambda(x)", "neuron.fire()", "if(signal){pulse();}", "compute()", "link(nodeA, nodeB)", "matrix.compose()", "vector.normalize()"];
+
+    function rand(min, max) { return Math.random() * (max - min) + min; }
+
+    for (let i = 0; i < nodeCount; i++) {
+      nodes.push({
+        x: rand(0, width),
+        y: rand(0, height),
+        vx: rand(-0.2, 0.2),
+        vy: rand(-0.2, 0.2),
+        pulse: Math.random(),
+        text: codeFragments[Math.floor(rand(0, codeFragments.length))],
+        textLife: rand(240, 480)
+      });
+    }
+
+    function resizeCanvas() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(resizeCanvas, 120);
+    });
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = 'rgba(0,0,0,0.5)';
+      ctx.fillRect(0, 0, width, height);
+
+      // connections
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i];
+          const b = nodes[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 160) {
+            const alpha = 1 - dist / 160;
+            ctx.strokeStyle = `rgba(0, 246, 255, ${alpha * 0.35})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+            if (Math.random() < 0.002) {
+              ctx.strokeStyle = `rgba(195, 255, 0, ${alpha})`;
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      // nodes and pulses
+      nodes.forEach(node => {
+        node.x += node.vx;
+        node.y += node.vy;
+        if (node.x < 0 || node.x > width) node.vx *= -1;
+        if (node.y < 0 || node.y > height) node.vy *= -1;
+
+        ctx.fillStyle = 'rgba(0, 246, 255, 0.8)';
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        const pulseSize = 2 + Math.sin(Date.now() / 400 + node.pulse * 10) * 2;
+        ctx.strokeStyle = 'rgba(255, 0, 200, 0.3)';
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, pulseSize, 0, Math.PI * 2);
+        ctx.stroke();
+
+        node.textLife -= 1;
+        if (node.textLife < 0) {
+          node.text = codeFragments[Math.floor(rand(0, codeFragments.length))];
+          node.textLife = rand(240, 480);
+        }
+        if (node.textLife < 140) {
+          const textAlpha = Math.min(0.4, (node.textLife / 140) * 0.4);
+          ctx.fillStyle = `rgba(195, 255, 0, ${textAlpha})`;
+          ctx.font = '12px "IBM Plex Mono", monospace';
+          ctx.fillText(node.text, node.x + 6, node.y - 6);
+        }
+      });
+    }
+    let lastTime = 0;
+    const fps = 40;
+    const frameInterval = 1000 / fps;
+    function animate(timestamp) {
+      if (!lastTime) lastTime = timestamp;
+      const delta = timestamp - lastTime;
+      if (delta > frameInterval) {
+        lastTime = timestamp - (delta % frameInterval);
+        draw();
+      }
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+
+    const typewriter = document.getElementById('typewriter');
+    const phrase = '_ engineered intelligence for reality & simulation';
+    let idx = 0;
+    function type() {
+      typewriter.textContent = phrase.slice(0, idx) + (idx % 2 === 0 ? '|' : '');
+      idx++;
+      if (idx <= phrase.length) {
+        setTimeout(type, 40);
+      } else {
+        typewriter.textContent = phrase;
+      }
+    }
+    setTimeout(type, 300);
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    const cursor = document.getElementById('cursor');
+    window.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+    window.addEventListener('mousedown', () => cursor.style.boxShadow = `0 0 14px rgba(255, 0, 200, 0.7)`);
+    window.addEventListener('mouseup', () => cursor.style.boxShadow = `0 0 8px rgba(0, 246, 255, 0.6)`);
+
+    // Contact modal + EmailJS
+    emailjs.init("vIISw4m27ZLNjGiqT");
+    const modal = document.getElementById('contact-modal');
+    const openBtn = document.getElementById('open-contact');
+    const closeBtn = document.getElementById('close-contact');
+    const statusEl = document.getElementById('status');
+    openBtn.addEventListener('click', () => {
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+    });
+    closeBtn.addEventListener('click', () => {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      statusEl.textContent = '';
+    });
+    modal.addEventListener('click', e => {
+      if (e.target === modal) {
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+        statusEl.textContent = '';
+      }
+    });
+
+    document.getElementById('contact-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      statusEl.textContent = 'transmitting...';
+      emailjs.sendForm('mistudio', 'mitemplate', this)
+        .then(function(response) {
+          console.log('SUCCESS!', response.status, response.text);
+          statusEl.textContent = 'signal sent. we will respond.';
+          event.target.reset();
+        }, function(error) {
+          console.log('FAILED...', error);
+          statusEl.textContent = 'transmission failed. retry.';
+        });
+    });
+  </script>
+</body>
+</html>
