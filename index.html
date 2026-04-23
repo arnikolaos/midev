@@ -917,15 +917,15 @@ engineered for clarity, precision, and operational decision-making.
 
     document.getElementById('contact-form').addEventListener('submit', function(event) {
       event.preventDefault();
-      statusEl.textContent = 'transmitting...';
+      statusEl.textContent = 'sending message...';
       emailjs.sendForm('mistudio', 'mitemplate', this)
         .then(function(response) {
           console.log('SUCCESS!', response.status, response.text);
-          statusEl.textContent = 'signal sent. we will respond.';
+          statusEl.textContent = 'message sent. we will respond shortly.';
           event.target.reset();
         }, function(error) {
           console.log('FAILED...', error);
-          statusEl.textContent = 'transmission failed. retry.';
+          statusEl.textContent = 'message not sent. retry.';
         });
     });
   </script>
