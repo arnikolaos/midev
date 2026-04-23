@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MI DEVELOPMENT</title>
+  <!-- Copyright 2026 - MI Development - All Rights Reserved -->
   <meta name="description" content="MI Development AI Division — engineered intelligence, software systems, data architecture, automation, real-time compute, digital twins. Brutalist hacker interface.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,11 +13,62 @@
   <style>
     :root {
       --bg: #000000;
+      --bg-rgb: 0, 0, 0;
       --fg: #f0f0f0;
+      --fg-rgb: 240, 240, 240;
       --cyan: #00f6ff;
+      --cyan-rgb: 0, 246, 255;
       --lime: #c3ff00;
+      --lime-rgb: 195, 255, 0;
       --magenta: #ff00c8;
+      --magenta-rgb: 255, 0, 200;
       --border: #111;
+      --border-strong: rgba(17, 17, 17, 1);
+      --panel-bg: rgba(0, 0, 0, 0.6);
+      --panel-strong: rgba(0, 0, 0, 0.75);
+      --modal-bg: rgba(0, 0, 0, 0.9);
+      --overlay: rgba(0, 0, 0, 0.75);
+      --input-bg: #050505;
+      --canvas-fade: rgba(0, 0, 0, 0.5);
+      --scanline-color: rgba(255, 255, 255, 0.05);
+      --scanline-opacity: 0.06;
+      --footnote-color: rgba(240, 240, 240, 0.34);
+      --footnote-shadow: rgba(0, 246, 255, 0.08);
+      --toggle-bg: rgba(0, 0, 0, 0.42);
+      --toggle-border: rgba(240, 240, 240, 0.12);
+      --toggle-dot-start: #8f989b;
+      --toggle-dot-end: #8f989b;
+    }
+    body[data-theme="day"] {
+      --bg: #f4ead7;
+      --bg-rgb: 244, 234, 215;
+      --fg: #231912;
+      --fg-rgb: 35, 25, 18;
+      --cyan: #9d5207;
+      --cyan-rgb: 157, 82, 7;
+      --lime: #6d7a24;
+      --lime-rgb: 109, 122, 36;
+      --magenta: #b45742;
+      --magenta-rgb: 180, 87, 66;
+      --border: #c5b79f;
+      --border-strong: rgba(197, 183, 159, 1);
+      --panel-bg: rgba(244, 234, 215, 0.64);
+      --panel-strong: rgba(244, 234, 215, 0.78);
+      --modal-bg: rgba(248, 239, 224, 0.94);
+      --overlay: rgba(78, 56, 34, 0.2);
+      --input-bg: #f6eddc;
+      --canvas-fade: rgba(244, 234, 215, 0.44);
+      --scanline-color: rgba(80, 50, 20, 0.035);
+      --scanline-opacity: 0.08;
+      --footnote-color: rgba(35, 25, 18, 0.38);
+      --footnote-shadow: rgba(157, 82, 7, 0.08);
+      --toggle-bg: rgba(244, 234, 215, 0.56);
+      --toggle-border: rgba(35, 25, 18, 0.12);
+      --toggle-dot-start: #4e4740;
+      --toggle-dot-end: #6a6259;
+    }
+    body[data-theme="day"] .subline {
+      color: #7b5a2c;
     }
     * { box-sizing: border-box; }
     html, body {
@@ -29,6 +81,7 @@
       cursor: none;
       scroll-behavior: smooth;
       overflow-x: hidden;
+      transition: background-color 0.35s ease, color 0.35s ease;
     }
     canvas#neuralCanvas {
       position: fixed;
@@ -37,7 +90,8 @@
       height: 100vh;
       z-index: 0;
       pointer-events: none;
-      filter: drop-shadow(0 0 6px rgba(0, 246, 255, 0.35));
+      filter: drop-shadow(0 0 6px rgba(var(--cyan-rgb), 0.35));
+      transition: filter 0.35s ease;
     }
     .scanlines {
       pointer-events: none;
@@ -45,14 +99,15 @@
       inset: 0;
       background: repeating-linear-gradient(
         to bottom,
-        rgba(255,255,255,0.05),
-        rgba(255,255,255,0.05) 1px,
+        var(--scanline-color),
+        var(--scanline-color) 1px,
         transparent 2px,
         transparent 3px
       );
-      opacity: 0.06;
+      opacity: var(--scanline-opacity);
       mix-blend-mode: screen;
       z-index: 1;
+      transition: opacity 0.35s ease;
     }
     .cursor {
       position: fixed;
@@ -65,6 +120,44 @@
       z-index: 100;
       box-shadow: 0 0 8px rgba(0, 246, 255, 0.6);
       mix-blend-mode: screen;
+    }
+    body[data-theme="day"] .cursor {
+      mix-blend-mode: multiply;
+    }
+    .theme-toggle {
+      position: fixed;
+      top: 22px;
+      right: 22px;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      border: 1px solid var(--toggle-border);
+      background: var(--toggle-bg);
+      color: var(--fg);
+      font: inherit;
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+      transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        background-color 0.35s ease,
+        color 0.35s ease;
+    }
+    .theme-toggle:hover {
+      border-color: rgba(var(--cyan-rgb), 0.45);
+      box-shadow: 0 0 14px rgba(var(--cyan-rgb), 0.16);
+    }
+    .theme-toggle-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--toggle-dot-start), var(--toggle-dot-end));
+      box-shadow: 0 0 10px rgba(var(--cyan-rgb), 0.3);
+      flex: 0 0 auto;
     }
     .layout {
       position: relative;
@@ -79,6 +172,11 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      gap: 20px;
+    }
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
       gap: 20px;
     }
     .eyebrow {
@@ -102,12 +200,80 @@
       min-height: 1.3em;
       position: relative;
     }
+    .hero-bloom {
+      opacity: 0;
+      transform: translateY(14px) scale(0.985);
+      filter: blur(8px);
+      transition:
+        opacity 0.9s ease,
+        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 1s ease,
+        text-shadow 1s ease;
+    }
+    .hero-bloom.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+    .hero-bloom.visible .eyebrow {
+      text-shadow: 0 0 10px rgba(var(--cyan-rgb), 0.35);
+    }
+    .hero-bloom.visible h1 {
+      text-shadow:
+        0 0 14px rgba(var(--cyan-rgb), 0.3),
+        0 0 28px rgba(var(--cyan-rgb), 0.14),
+        0 0 42px rgba(var(--fg-rgb), 0.08);
+    }
+    .hero-bloom.visible .subline {
+      text-shadow: 0 0 12px rgba(var(--lime-rgb), 0.22);
+    }
     .intro {
       max-width: 720px;
       color: var(--fg);
       opacity: 0.8;
       line-height: 1.7;
       text-transform: lowercase;
+    }
+    .intro-tech-reveal {
+      position: relative;
+      opacity: 0;
+      transform: translateY(10px);
+      filter: blur(4px);
+      transition:
+        opacity 0.65s ease,
+        transform 0.65s ease,
+        filter 0.65s ease;
+    }
+    .intro-tech-reveal::after {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(var(--cyan-rgb), 0.2) 45%, rgba(var(--lime-rgb), 0.28) 50%, transparent 55%);
+      transform: translateX(-108%);
+      pointer-events: none;
+      opacity: 0;
+    }
+    .intro-tech-reveal.visible {
+      opacity: 0.8;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+    .intro-tech-reveal.visible::after {
+      opacity: 1;
+      animation: introScan 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    @keyframes introScan {
+      0% {
+        transform: translateX(-108%);
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(108%);
+        opacity: 0;
+      }
     }
     .glitch:hover {
       animation: glitch 0.35s steps(2, end) infinite;
@@ -127,12 +293,12 @@
       border: 2px solid var(--border);
       padding: 32px;
       max-width: 760px;
-      background: rgba(0, 0, 0, 0.6);
+      background: var(--panel-bg);
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
     .mission-block:hover {
       border-color: var(--cyan);
-      box-shadow: 0 0 18px rgba(0, 246, 255, 0.2);
+      box-shadow: 0 0 18px rgba(var(--cyan-rgb), 0.2);
     }
     .label {
       color: var(--magenta);
@@ -151,7 +317,7 @@
       padding: 24px;
       text-transform: lowercase;
       transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-      background: rgba(0, 0, 0, 0.75);
+      background: var(--panel-strong);
       position: relative;
       overflow: hidden;
     }
@@ -159,14 +325,14 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(120deg, transparent, rgba(0, 246, 255, 0.08), transparent);
+      background: linear-gradient(120deg, transparent, rgba(var(--cyan-rgb), 0.08), transparent);
       opacity: 0;
       transition: opacity 0.25s ease;
     }
     .service-card:hover {
       border-color: var(--cyan);
       transform: translateY(-4px);
-      box-shadow: 0 0 14px rgba(0, 246, 255, 0.25);
+      box-shadow: 0 0 14px rgba(var(--cyan-rgb), 0.25);
     }
     .service-card:hover::after {
       opacity: 1;
@@ -194,7 +360,7 @@
     }
     .contact-block:hover {
       border-color: var(--lime);
-      box-shadow: 0 0 16px rgba(195, 255, 0, 0.3);
+      box-shadow: 0 0 16px rgba(var(--lime-rgb), 0.3);
     }
     .caret {
       display: inline-block;
@@ -230,7 +396,7 @@
     }
     .contact-btn:hover {
       border-color: var(--magenta);
-      box-shadow: 0 0 14px rgba(255, 0, 200, 0.35);
+      box-shadow: 0 0 14px rgba(var(--magenta-rgb), 0.35);
     }
     .modal {
       position: fixed;
@@ -238,17 +404,17 @@
       display: none;
       align-items: center;
       justify-content: center;
-      background: rgba(0,0,0,0.75);
+      background: var(--overlay);
       backdrop-filter: blur(4px);
       z-index: 10;
     }
     .modal.open { display: flex; }
     .modal-card {
-      background: rgba(0,0,0,0.9);
+      background: var(--modal-bg);
       border: 2px solid var(--cyan);
       padding: 28px;
       width: min(520px, 90vw);
-      box-shadow: 0 0 18px rgba(0, 246, 255, 0.25);
+      box-shadow: 0 0 18px rgba(var(--cyan-rgb), 0.25);
       position: relative;
     }
     .modal-close {
@@ -264,7 +430,7 @@
       letter-spacing: 0.12em;
     }
     .modal-close:hover {
-      box-shadow: 0 0 12px rgba(255, 0, 200, 0.4);
+      box-shadow: 0 0 12px rgba(var(--magenta-rgb), 0.4);
     }
     .modal h3 {
       margin: 0 0 12px 0;
@@ -285,7 +451,7 @@
     .modal input,
     .modal textarea {
       width: 100%;
-      background: #050505;
+      background: var(--input-bg);
       border: 2px solid var(--border);
       color: var(--fg);
       padding: 12px;
@@ -296,7 +462,7 @@
     .modal textarea:focus {
       outline: none;
       border-color: var(--cyan);
-      box-shadow: 0 0 10px rgba(0, 246, 255, 0.2);
+      box-shadow: 0 0 10px rgba(var(--cyan-rgb), 0.2);
     }
     .modal button[type="submit"] {
       border: 2px solid var(--cyan);
@@ -310,18 +476,41 @@
     }
     .modal button[type="submit"]:hover {
       border-color: var(--magenta);
-      box-shadow: 0 0 14px rgba(255, 0, 200, 0.35);
+      box-shadow: 0 0 14px rgba(var(--magenta-rgb), 0.35);
     }
     .status {
       font-size: 0.9rem;
       color: var(--magenta);
       min-height: 1.2em;
     }
+    .site-footnote {
+      position: fixed;
+      left: 8vw;
+      bottom: 18px;
+      z-index: 2;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--footnote-color);
+      text-shadow: 0 0 8px var(--footnote-shadow);
+      pointer-events: none;
+    }
     @media (max-width: 720px) {
       section { padding: 100px 7vw; }
       .services-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
       html, body { cursor: default; }
       .cursor { display: none; }
+      .theme-toggle {
+        top: 14px;
+        right: 14px;
+        width: 26px;
+        height: 26px;
+      }
+      .site-footnote {
+        left: 7vw;
+        bottom: 14px;
+        font-size: 0.56rem;
+      }
     }
   </style>
 </head>
@@ -329,25 +518,37 @@
   <canvas id="neuralCanvas"></canvas>
   <div class="scanlines"></div>
   <div class="cursor" id="cursor"></div>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch color theme">
+    <span class="theme-toggle-dot"></span>
+  </button>
+  <div class="site-footnote">© 2026 MI DEVELOPMENT | Data Intelligence Systems</div>
   <main class="layout">
     <section id="hero">
-      <div class="eyebrow glitch">mi development // ai division</div>
-      <h1>> MI.DEV // AI / SOFTWARE / SYSTEMS</h1>
-      <div class="subline" id="typewriter" aria-live="polite">_</div>
-      <p class="intro">MI Development builds AI systems, real-time software, and data-driven tools for high-performance operations. We focus on automation, analysis, research, and optimization — delivering custom intelligence for companies, corporations, and organizations that need more than off-the-shelf solutions.</p>
+      <div class="hero-copy hero-bloom reveal">
+        <div class="eyebrow glitch">mi development // data intelligence systems</div>
+        <h1>market &amp; pricing intelligence</h1>
+        <div class="subline" id="typewriter" aria-live="polite">_ engineered data for decisions</div>
+      </div>
+      <p class="intro intro-tech-reveal reveal">
+        MI Development builds data intelligence systems that ingest, structure, and interpret real-time market data. We
+        focus on pricing, competition, and market signals — delivering engineered insights and decision support for
+        companies that require precision beyond standard tools.&nbsp;
+      </p>
     </section>
 
     <section id="mission">
       <div class="mission-block reveal">
         <div class="label">:: purpose</div>
-        <p>we build custom intelligence,<br>autonomous systems,<br>architectural computation,<br>and cross-reality tools.</p>
-        <p>ai. software. analysis. automation.</p>
+        <p>we build data intelligence systems, real-time analytics pipelines, and decision support tools for pricing and market behavior.
+engineered for clarity, precision, and operational decision-making.
+        </p>
+        <p>data. systems. intelligence. decisions.</p>
       </div>
     </section>
 
     <section id="services">
       <div class="eyebrow glitch">capabilities</div>
-      <h2 class="service-title">system capabilities</h2>
+      <h2 class="service-title">Data Intelligence System for Market Decisions</h2>
       <div class="services-grid">
         <div class="service-card reveal">
           <div class="service-title">ai systems</div>
@@ -382,10 +583,9 @@
 
     <section id="contact">
       <div class="contact-block reveal">
-        <div class="label">> establish connection</div>
-        <p>mi-development / ai division</p>
-        <p class="glitch">send a message<span class="caret"></span></p>
-        <button class="contact-btn" id="open-contact">> open secure channel</button>
+        <div class="label">&gt; work with us</div>
+        <p class="glitch">ready to turn data into decisions?<span class="caret"></span></p>
+        <button class="contact-btn" id="open-contact">> connect with our team</button>
       </div>
     </section>
   </main>
@@ -393,7 +593,7 @@
   <div class="modal" id="contact-modal" aria-hidden="true">
     <div class="modal-card">
       <button class="modal-close" id="close-contact">close</button>
-      <h3>> send transmission</h3>
+      <h3>> send message</h3>
       <form id="contact-form">
         <label for="name">name</label>
         <input type="text" id="name" name="from_name" required>
@@ -404,13 +604,46 @@
         <label for="message">message</label>
         <textarea id="message" name="message" rows="4" required></textarea>
 
-        <button type="submit">dispatch</button>
+        <button type="submit">send</button>
         <div class="status" id="status"></div>
       </form>
     </div>
   </div>
 
   <script>
+    const themes = {
+      night: {
+        canvasFade: 'rgba(0, 0, 0, 0.5)',
+        connection: [0, 246, 255],
+        flash: [195, 255, 0],
+        node: [0, 246, 255],
+        pulse: [255, 0, 200],
+        text: [195, 255, 0],
+        cursorIdle: '0 0 8px rgba(0, 246, 255, 0.6)',
+        cursorActive: '0 0 14px rgba(255, 0, 200, 0.7)'
+      },
+      day: {
+        canvasFade: 'rgba(244, 234, 215, 0.44)',
+        connection: [157, 82, 7],
+        flash: [109, 122, 36],
+        node: [157, 82, 7],
+        pulse: [180, 87, 66],
+        text: [109, 122, 36],
+        cursorIdle: '0 0 8px rgba(157, 82, 7, 0.45)',
+        cursorActive: '0 0 14px rgba(180, 87, 66, 0.55)'
+      }
+    };
+    const themeToggle = document.getElementById('theme-toggle');
+    let currentTheme = localStorage.getItem('mi-theme') || 'night';
+    function applyTheme(theme) {
+      currentTheme = theme;
+      document.body.dataset.theme = theme;
+      localStorage.setItem('mi-theme', theme);
+      const cursorEl = document.getElementById('cursor');
+      if (cursorEl) cursorEl.style.boxShadow = themes[theme].cursorIdle;
+    }
+    applyTheme(currentTheme);
+
     const canvas = document.getElementById('neuralCanvas');
     const ctx = canvas.getContext('2d');
     let width = window.innerWidth;
@@ -449,8 +682,9 @@
     });
 
     function draw() {
+      const palette = themes[currentTheme];
       ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = 'rgba(0,0,0,0.5)';
+      ctx.fillStyle = palette.canvasFade;
       ctx.fillRect(0, 0, width, height);
 
       // connections
@@ -463,14 +697,14 @@
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 160) {
             const alpha = 1 - dist / 160;
-            ctx.strokeStyle = `rgba(0, 246, 255, ${alpha * 0.35})`;
+            ctx.strokeStyle = `rgba(${palette.connection.join(', ')}, ${alpha * 0.35})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
             ctx.stroke();
             if (Math.random() < 0.002) {
-              ctx.strokeStyle = `rgba(195, 255, 0, ${alpha})`;
+              ctx.strokeStyle = `rgba(${palette.flash.join(', ')}, ${alpha})`;
               ctx.lineWidth = 2;
               ctx.beginPath();
               ctx.moveTo(a.x, a.y);
@@ -488,13 +722,13 @@
         if (node.x < 0 || node.x > width) node.vx *= -1;
         if (node.y < 0 || node.y > height) node.vy *= -1;
 
-        ctx.fillStyle = 'rgba(0, 246, 255, 0.8)';
+        ctx.fillStyle = `rgba(${palette.node.join(', ')}, 0.8)`;
         ctx.beginPath();
         ctx.arc(node.x, node.y, 2, 0, Math.PI * 2);
         ctx.fill();
 
         const pulseSize = 2 + Math.sin(Date.now() / 400 + node.pulse * 10) * 2;
-        ctx.strokeStyle = 'rgba(255, 0, 200, 0.3)';
+        ctx.strokeStyle = `rgba(${palette.pulse.join(', ')}, 0.3)`;
         ctx.beginPath();
         ctx.arc(node.x, node.y, pulseSize, 0, Math.PI * 2);
         ctx.stroke();
@@ -506,7 +740,7 @@
         }
         if (node.textLife < 140) {
           const textAlpha = Math.min(0.4, (node.textLife / 140) * 0.4);
-          ctx.fillStyle = `rgba(195, 255, 0, ${textAlpha})`;
+          ctx.fillStyle = `rgba(${palette.text.join(', ')}, ${textAlpha})`;
           ctx.font = '12px "IBM Plex Mono", monospace';
           ctx.fillText(node.text, node.x + 6, node.y - 6);
         }
@@ -527,7 +761,7 @@
     requestAnimationFrame(animate);
 
     const typewriter = document.getElementById('typewriter');
-    const phrase = '_ engineered intelligence for reality & simulation';
+    const phrase = '_ engineered data for decisions';
     let idx = 0;
     function type() {
       typewriter.textContent = phrase.slice(0, idx) + (idx % 2 === 0 ? '|' : '');
@@ -554,8 +788,11 @@
       cursor.style.left = e.clientX + 'px';
       cursor.style.top = e.clientY + 'px';
     });
-    window.addEventListener('mousedown', () => cursor.style.boxShadow = `0 0 14px rgba(255, 0, 200, 0.7)`);
-    window.addEventListener('mouseup', () => cursor.style.boxShadow = `0 0 8px rgba(0, 246, 255, 0.6)`);
+    window.addEventListener('mousedown', () => cursor.style.boxShadow = themes[currentTheme].cursorActive);
+    window.addEventListener('mouseup', () => cursor.style.boxShadow = themes[currentTheme].cursorIdle);
+    themeToggle.addEventListener('click', () => {
+      applyTheme(currentTheme === 'night' ? 'day' : 'night');
+    });
 
     // Contact modal + EmailJS
     emailjs.init("vIISw4m27ZLNjGiqT");
