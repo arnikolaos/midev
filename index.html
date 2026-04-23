@@ -320,6 +320,11 @@
       background: var(--panel-strong);
       position: relative;
       overflow: hidden;
+      width: 100%;
+      text-align: left;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
     }
     .service-card::after {
       content: "";
@@ -329,13 +334,18 @@
       opacity: 0;
       transition: opacity 0.25s ease;
     }
-    .service-card:hover {
+    .service-card:hover,
+    .service-card:focus-visible {
       border-color: var(--cyan);
       transform: translateY(-4px);
       box-shadow: 0 0 14px rgba(var(--cyan-rgb), 0.25);
     }
-    .service-card:hover::after {
+    .service-card:hover::after,
+    .service-card:focus-visible::after {
       opacity: 1;
+    }
+    .service-card:focus-visible {
+      outline: none;
     }
     .service-title {
       color: var(--cyan);
@@ -348,6 +358,14 @@
       color: var(--fg);
       opacity: 0.8;
       line-height: 1.5;
+    }
+    .service-hint {
+      margin-top: 16px;
+      color: var(--lime);
+      opacity: 0.75;
+      font-size: 0.76rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
     }
     #contact {
       padding-bottom: 140px;
@@ -421,6 +439,7 @@
       position: absolute;
       top: 10px;
       right: 10px;
+      z-index: 2;
       background: transparent;
       border: 1px solid var(--magenta);
       color: var(--fg);
@@ -478,6 +497,48 @@
       border-color: var(--magenta);
       box-shadow: 0 0 14px rgba(var(--magenta-rgb), 0.35);
     }
+    .info-modal-card {
+      width: min(440px, calc(100vw - 32px));
+      padding: 22px 22px 20px;
+      border-color: rgba(var(--cyan-rgb), 0.72);
+      box-shadow:
+        0 0 20px rgba(var(--cyan-rgb), 0.18),
+        inset 0 0 0 1px rgba(var(--fg-rgb), 0.04);
+    }
+    .info-modal-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(var(--cyan-rgb), 0.08), transparent 42%),
+        linear-gradient(225deg, rgba(var(--magenta-rgb), 0.06), transparent 38%);
+      pointer-events: none;
+    }
+    .info-modal-content {
+      position: relative;
+      z-index: 1;
+    }
+    .info-modal-label {
+      margin-bottom: 10px;
+      color: var(--lime);
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.82;
+    }
+    .info-modal-card h3 {
+      margin: 0 0 12px 0;
+      padding-right: 72px;
+      line-height: 1.2;
+    }
+    .info-modal-copy {
+      margin: 0;
+      max-width: 34ch;
+      line-height: 1.7;
+      text-transform: none;
+      letter-spacing: 0.05em;
+      opacity: 0.9;
+    }
     .status {
       font-size: 0.9rem;
       color: var(--magenta);
@@ -498,6 +559,23 @@
     @media (max-width: 720px) {
       section { padding: 100px 7vw; }
       .services-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+      .service-card {
+        min-height: 172px;
+      }
+      .service-hint {
+        margin-top: 14px;
+      }
+      .info-modal-card {
+        width: min(100vw - 22px, 420px);
+        padding: 20px 18px 18px;
+      }
+      .info-modal-card h3 {
+        padding-right: 64px;
+      }
+      .info-modal-copy {
+        max-width: none;
+        font-size: 0.94rem;
+      }
       html, body { cursor: default; }
       .cursor { display: none; }
       .theme-toggle {
@@ -547,37 +625,29 @@ engineered for clarity, precision, and operational decision-making.
     </section>
 
     <section id="services">
-      <div class="eyebrow glitch">capabilities</div>
+      <div class="eyebrow glitch">system capabilities</div>
       <h2 class="service-title">Data Intelligence System for Market Decisions</h2>
       <div class="services-grid">
-        <div class="service-card reveal">
-          <div class="service-title">ai systems</div>
-          <div class="service-meta">custom llms, agents, automation</div>
-        </div>
-        <div class="service-card reveal">
-          <div class="service-title">software engineering</div>
-          <div class="service-meta">apps, platforms, apis</div>
-        </div>
-        <div class="service-card reveal">
-          <div class="service-title">data intelligence</div>
-          <div class="service-meta">predictive analytics, visualizations</div>
-        </div>
-        <div class="service-card reveal">
-          <div class="service-title">real-time compute</div>
-          <div class="service-meta">ue5 tools, pipelines, simulations</div>
-        </div>
-        <div class="service-card reveal">
-          <div class="service-title">metaverse & digital twins</div>
-          <div class="service-meta">ue/blender integrations</div>
-        </div>
-        <div class="service-card reveal">
-          <div class="service-title">custom architectures</div>
-          <div class="service-meta">infrastructure & devops</div>
-        </div>
-        <div class="service-card reveal">
-          <div class="service-title">saas</div>
-          <div class="service-meta">productized platforms, secure multi-tenant delivery</div>
-        </div>
+        <button
+          class="service-card reveal"
+          type="button"
+          data-info-title="pricing intelligence"
+          data-info-copy="Live pricing analysis layer that reveals how competitors move prices and where margin pressure builds across the market."
+        >
+          <div class="service-title">pricing intelligence</div>
+          <div class="service-meta">price tracking, competitor pricing, margin signals</div>
+          <div class="service-hint">details</div>
+        </button>
+        <button
+          class="service-card reveal"
+          type="button"
+          data-info-title="market intelligence"
+          data-info-copy="Real-time market signal layer that tracks demand shifts, category movement, and competitive activity across the ecosystem."
+        >
+          <div class="service-title">market intelligence</div>
+          <div class="service-meta">market trends, demand signals, category shifts</div>
+          <div class="service-hint"></div>
+        </button>
       </div>
     </section>
 
@@ -607,6 +677,17 @@ engineered for clarity, precision, and operational decision-making.
         <button type="submit">send</button>
         <div class="status" id="status"></div>
       </form>
+    </div>
+  </div>
+
+  <div class="modal" id="capability-modal" aria-hidden="true">
+    <div class="modal-card info-modal-card">
+      <button class="modal-close" id="close-capability" type="button">close</button>
+      <div class="info-modal-content">
+        <div class="info-modal-label">intelligence layer</div>
+        <h3 id="capability-modal-title"></h3>
+        <p class="info-modal-copy" id="capability-modal-copy"></p>
+      </div>
     </div>
   </div>
 
@@ -794,6 +875,45 @@ engineered for clarity, precision, and operational decision-making.
       applyTheme(currentTheme === 'night' ? 'day' : 'night');
     });
 
+    function openModal(modalEl) {
+      modalEl.classList.add('open');
+      modalEl.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeModal(modalEl) {
+      modalEl.classList.remove('open');
+      modalEl.setAttribute('aria-hidden', 'true');
+    }
+
+    document.querySelectorAll('.modal').forEach(modalEl => {
+      modalEl.addEventListener('click', e => {
+        if (e.target === modalEl) {
+          closeModal(modalEl);
+          if (modalEl === document.getElementById('contact-modal')) {
+            document.getElementById('status').textContent = '';
+          }
+        }
+      });
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key !== 'Escape') return;
+      document.querySelectorAll('.modal.open').forEach(modalEl => closeModal(modalEl));
+      document.getElementById('status').textContent = '';
+    });
+
+    const capabilityModal = document.getElementById('capability-modal');
+    const capabilityTitle = document.getElementById('capability-modal-title');
+    const capabilityCopy = document.getElementById('capability-modal-copy');
+    document.querySelectorAll('.service-card').forEach(card => {
+      card.addEventListener('click', () => {
+        capabilityTitle.textContent = `> ${card.dataset.infoTitle}`;
+        capabilityCopy.textContent = card.dataset.infoCopy;
+        openModal(capabilityModal);
+      });
+    });
+    document.getElementById('close-capability').addEventListener('click', () => closeModal(capabilityModal));
+
     // Contact modal + EmailJS
     emailjs.init("vIISw4m27ZLNjGiqT");
     const modal = document.getElementById('contact-modal');
@@ -801,20 +921,11 @@ engineered for clarity, precision, and operational decision-making.
     const closeBtn = document.getElementById('close-contact');
     const statusEl = document.getElementById('status');
     openBtn.addEventListener('click', () => {
-      modal.classList.add('open');
-      modal.setAttribute('aria-hidden', 'false');
+      openModal(modal);
     });
     closeBtn.addEventListener('click', () => {
-      modal.classList.remove('open');
-      modal.setAttribute('aria-hidden', 'true');
+      closeModal(modal);
       statusEl.textContent = '';
-    });
-    modal.addEventListener('click', e => {
-      if (e.target === modal) {
-        modal.classList.remove('open');
-        modal.setAttribute('aria-hidden', 'true');
-        statusEl.textContent = '';
-      }
     });
 
     document.getElementById('contact-form').addEventListener('submit', function(event) {
