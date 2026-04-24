@@ -962,6 +962,10 @@ engineered for clarity, precision, and operational decision-making.
         .then(function(response) {
           console.log('SUCCESS!', response.status, response.text);
           statusEl.textContent = 'message sent. we will respond shortly.';
+        
+        // auto-reply to client
+        emailjs.sendForm('mistudio', 'client_reply', this);
+        
           event.target.reset();
         }, function(error) {
           console.log('FAILED...', error);
