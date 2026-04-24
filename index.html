@@ -1,977 +1,1051 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MI DEVELOPMENT</title>
-  <!-- Copyright 2026 - MI Development - All Rights Reserved -->
-  <meta name="description" content="Data intelligence systems for pricing and market behavior, with real-time analytics and decision support for smarter market decisions.">
-  <meta name="keywords" content="data intelligence systems, pricing intelligence, market intelligence, market behavior, pricing analytics, real-time analytics, decision support, competitor pricing, demand signals, category shifts">
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  <meta name="author" content="MI Development">
-  <link rel="canonical" href="https://midev.gr/">
-  <link rel="icon" href="https://midev.gr/favicon.svg" type="image/svg+xml">
-  <link rel="icon" href="https://midev.gr/favicon-32.png" sizes="32x32" type="image/png">
-  <link rel="apple-touch-icon" href="https://midev.gr/apple-touch-icon.png">
-  <link rel="shortcut icon" href="https://midev.gr/favicon.ico">
-  <meta name="theme-color" content="#000000">
-  <meta property="og:title" content="MI DEVELOPMENT | Market &amp; Pricing Intelligence">
-  <meta property="og:description" content="Data intelligence systems for pricing and market behavior, with real-time analytics and decision support for smarter market decisions.">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="MI Development">
-  <meta property="og:url" content="https://midev.gr/">
-  <meta property="og:locale" content="en_US">
-  <meta property="og:image" content="https://midev.gr/mi-meta-logo.svg">
-  <meta property="og:image:type" content="image/svg+xml">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="MI DEVELOPMENT | Market &amp; Pricing Intelligence">
-  <meta name="twitter:description" content="Data intelligence systems for pricing and market behavior, with real-time analytics and decision support for smarter market decisions.">
-  <meta name="twitter:image" content="https://midev.gr/mi-meta-logo.svg">
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "MI Development",
-      "url": "https://midev.gr/",
-      "description": "Data intelligence systems for pricing and market behavior, with real-time analytics and decision support for smarter market decisions.",
-      "areaServed": "Global",
-      "sameAs": []
-    }
-  </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=VT323&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <style>
-    :root {
-      --bg: #000000;
-      --bg-rgb: 0, 0, 0;
-      --fg: #f0f0f0;
-      --fg-rgb: 240, 240, 240;
-      --cyan: #00f6ff;
-      --cyan-rgb: 0, 246, 255;
-      --lime: #c3ff00;
-      --lime-rgb: 195, 255, 0;
-      --magenta: #ff00c8;
-      --magenta-rgb: 255, 0, 200;
-      --border: #111;
-      --border-strong: rgba(17, 17, 17, 1);
-      --panel-bg: rgba(0, 0, 0, 0.6);
-      --panel-strong: rgba(0, 0, 0, 0.75);
-      --modal-bg: rgba(0, 0, 0, 0.9);
-      --overlay: rgba(0, 0, 0, 0.75);
-      --input-bg: #050505;
-      --canvas-fade: rgba(0, 0, 0, 0.5);
-      --scanline-color: rgba(255, 255, 255, 0.05);
-      --scanline-opacity: 0.06;
-      --footnote-color: rgba(240, 240, 240, 0.34);
-      --footnote-shadow: rgba(0, 246, 255, 0.08);
-      --toggle-bg: rgba(0, 0, 0, 0.42);
-      --toggle-border: rgba(240, 240, 240, 0.12);
-      --toggle-dot-start: #8f989b;
-      --toggle-dot-end: #8f989b;
-    }
-    body[data-theme="day"] {
-      --bg: #f4ead7;
-      --bg-rgb: 244, 234, 215;
-      --fg: #231912;
-      --fg-rgb: 35, 25, 18;
-      --cyan: #9d5207;
-      --cyan-rgb: 157, 82, 7;
-      --lime: #6d7a24;
-      --lime-rgb: 109, 122, 36;
-      --magenta: #b45742;
-      --magenta-rgb: 180, 87, 66;
-      --border: #c5b79f;
-      --border-strong: rgba(197, 183, 159, 1);
-      --panel-bg: rgba(244, 234, 215, 0.64);
-      --panel-strong: rgba(244, 234, 215, 0.78);
-      --modal-bg: rgba(248, 239, 224, 0.94);
-      --overlay: rgba(78, 56, 34, 0.2);
-      --input-bg: #f6eddc;
-      --canvas-fade: rgba(244, 234, 215, 0.44);
-      --scanline-color: rgba(80, 50, 20, 0.035);
-      --scanline-opacity: 0.08;
-      --footnote-color: rgba(35, 25, 18, 0.38);
-      --footnote-shadow: rgba(157, 82, 7, 0.08);
-      --toggle-bg: rgba(244, 234, 215, 0.56);
-      --toggle-border: rgba(35, 25, 18, 0.12);
-      --toggle-dot-start: #4e4740;
-      --toggle-dot-end: #6a6259;
-    }
-    body[data-theme="day"] .subline {
-      color: #7b5a2c;
-    }
-    * { box-sizing: border-box; }
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      color: var(--fg);
-      font-family: 'IBM Plex Mono', 'VT323', monospace;
-      letter-spacing: 0.06em;
-      cursor: none;
-      scroll-behavior: smooth;
-      overflow-x: hidden;
-      transition: background-color 0.35s ease, color 0.35s ease;
-    }
-    canvas#neuralCanvas {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 0;
-      pointer-events: none;
-      filter: drop-shadow(0 0 6px rgba(var(--cyan-rgb), 0.35));
-      transition: filter 0.35s ease;
-    }
-    .scanlines {
-      pointer-events: none;
-      position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        to bottom,
-        var(--scanline-color),
-        var(--scanline-color) 1px,
-        transparent 2px,
-        transparent 3px
-      );
-      opacity: var(--scanline-opacity);
-      mix-blend-mode: screen;
-      z-index: 1;
-      transition: opacity 0.35s ease;
-    }
-    .cursor {
-      position: fixed;
-      width: 18px;
-      height: 18px;
-      border: 1px solid var(--cyan);
-      border-radius: 2px;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      z-index: 100;
-      box-shadow: 0 0 8px rgba(0, 246, 255, 0.6);
-      mix-blend-mode: screen;
-    }
-    body[data-theme="day"] .cursor {
-      mix-blend-mode: multiply;
-    }
-    .theme-toggle {
-      position: fixed;
-      top: 22px;
-      right: 22px;
-      z-index: 3;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 28px;
-      height: 28px;
-      padding: 0;
-      border: 1px solid var(--toggle-border);
-      background: var(--toggle-bg);
-      color: var(--fg);
-      font: inherit;
-      backdrop-filter: blur(8px);
-      cursor: pointer;
-      transition:
-        border-color 0.25s ease,
-        box-shadow 0.25s ease,
-        background-color 0.35s ease,
-        color 0.35s ease;
-    }
-    .theme-toggle:hover {
-      border-color: rgba(var(--cyan-rgb), 0.45);
-      box-shadow: 0 0 14px rgba(var(--cyan-rgb), 0.16);
-    }
-    .theme-toggle-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--toggle-dot-start), var(--toggle-dot-end));
-      box-shadow: 0 0 10px rgba(var(--cyan-rgb), 0.3);
-      flex: 0 0 auto;
-    }
-    .layout {
-      position: relative;
-      z-index: 2;
-    }
-    section {
-      min-height: 80vh;
-      padding: 120px 8vw;
-    }
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 20px;
-    }
-    .hero-copy {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .eyebrow {
-      color: var(--cyan);
-      text-transform: uppercase;
-      font-size: 0.9rem;
-      letter-spacing: 0.2em;
-    }
-    h1 {
-      margin: 0;
-      font-size: clamp(32px, 4vw, 56px);
-      text-transform: uppercase;
-      line-height: 1.1;
-      color: var(--fg);
-      text-shadow: 0 0 12px rgba(0, 246, 255, 0.25);
-    }
-    .subline {
-      font-size: 1.1rem;
-      color: var(--lime);
-      opacity: 0.9;
-      min-height: 1.3em;
-      position: relative;
-    }
-    .hero-bloom {
-      opacity: 0;
-      transform: translateY(14px) scale(0.985);
-      filter: blur(8px);
-      transition:
-        opacity 0.9s ease,
-        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-        filter 1s ease,
-        text-shadow 1s ease;
-    }
-    .hero-bloom.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      filter: blur(0);
-    }
-    .hero-bloom.visible .eyebrow {
-      text-shadow: 0 0 10px rgba(var(--cyan-rgb), 0.35);
-    }
-    .hero-bloom.visible h1 {
-      text-shadow:
-        0 0 14px rgba(var(--cyan-rgb), 0.3),
-        0 0 28px rgba(var(--cyan-rgb), 0.14),
-        0 0 42px rgba(var(--fg-rgb), 0.08);
-    }
-    .hero-bloom.visible .subline {
-      text-shadow: 0 0 12px rgba(var(--lime-rgb), 0.22);
-    }
-    .intro {
-      max-width: 720px;
-      color: var(--fg);
-      opacity: 0.8;
-      line-height: 1.7;
-      text-transform: lowercase;
-    }
-    .intro-tech-reveal {
-      position: relative;
-      opacity: 0;
-      transform: translateY(10px);
-      filter: blur(4px);
-      transition:
-        opacity 0.65s ease,
-        transform 0.65s ease,
-        filter 0.65s ease;
-    }
-    .intro-tech-reveal::after {
-      content: "";
-      position: absolute;
-      inset: -2px;
-      background: linear-gradient(90deg, transparent 0%, rgba(var(--cyan-rgb), 0.2) 45%, rgba(var(--lime-rgb), 0.28) 50%, transparent 55%);
-      transform: translateX(-108%);
-      pointer-events: none;
-      opacity: 0;
-    }
-    .intro-tech-reveal.visible {
-      opacity: 0.8;
-      transform: translateY(0);
-      filter: blur(0);
-    }
-    .intro-tech-reveal.visible::after {
-      opacity: 1;
-      animation: introScan 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-    @keyframes introScan {
-      0% {
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MI DEVELOPMENT</title>
+    <!-- Copyright 2026 - MI Development - All Rights Reserved -->
+    <meta
+      name="description"
+      content="Data intelligence systems for pricing and market behavior, with real-time analytics and decision support for smarter market decisions." />
+    <meta
+      name="keywords"
+      content="data intelligence systems, pricing intelligence, market intelligence, market behavior, pricing analytics, real-time analytics, decision support, competitor pricing, demand signals, category shifts" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="author" content="MI Development" />
+    <link rel="canonical" href="https://midev.gr/" />
+    <link rel="icon" href="https://midev.gr/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="https://midev.gr/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="https://midev.gr/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="https://midev.gr/favicon.ico" />
+    <meta name="theme-color" content="#000000" />
+    <meta property="og:title" content="MI DEVELOPMENT | Market &amp; Pricing Intelligence" />
+    <meta
+      property="og:description"
+      content="Data intelligence systems for pricing and market behavior, with real-time analytics and decision support for smarter market decisions." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MI Development" />
+    <meta property="og:url" content="https://midev.gr/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://midev.gr/mi-meta-logo.svg" />
+    <meta property="og:image:type" content="image/svg+xml" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="MI DEVELOPMENT | Market &amp; Pricing Intelligence" />
+    <meta
+      name="twitter:description"
+      content="Data intelligence systems for pricing and market behavior, with real-time analytics and decision support for smarter market decisions." />
+    <meta name="twitter:image" content="https://midev.gr/mi-meta-logo.svg" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "MI Development",
+        "url": "https://midev.gr/",
+        "description": "Data intelligence systems for pricing and market behavior, with real-time analytics and decision support for smarter market decisions.",
+        "areaServed": "Global",
+        "sameAs": []
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=VT323&display=swap"
+      rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+      :root {
+        --bg: #000000;
+        --bg-rgb: 0, 0, 0;
+        --fg: #f0f0f0;
+        --fg-rgb: 240, 240, 240;
+        --cyan: #00f6ff;
+        --cyan-rgb: 0, 246, 255;
+        --lime: #c3ff00;
+        --lime-rgb: 195, 255, 0;
+        --magenta: #ff00c8;
+        --magenta-rgb: 255, 0, 200;
+        --border: #111;
+        --border-strong: rgba(17, 17, 17, 1);
+        --panel-bg: rgba(0, 0, 0, 0.6);
+        --panel-strong: rgba(0, 0, 0, 0.75);
+        --modal-bg: rgba(0, 0, 0, 0.9);
+        --overlay: rgba(0, 0, 0, 0.75);
+        --input-bg: #050505;
+        --canvas-fade: rgba(0, 0, 0, 0.5);
+        --scanline-color: rgba(255, 255, 255, 0.05);
+        --scanline-opacity: 0.06;
+        --footnote-color: rgba(240, 240, 240, 0.34);
+        --footnote-shadow: rgba(0, 246, 255, 0.08);
+        --toggle-bg: rgba(0, 0, 0, 0.42);
+        --toggle-border: rgba(240, 240, 240, 0.12);
+        --toggle-dot-start: #8f989b;
+        --toggle-dot-end: #8f989b;
+      }
+      body[data-theme="day"] {
+        --bg: #f4ead7;
+        --bg-rgb: 244, 234, 215;
+        --fg: #231912;
+        --fg-rgb: 35, 25, 18;
+        --cyan: #9d5207;
+        --cyan-rgb: 157, 82, 7;
+        --lime: #6d7a24;
+        --lime-rgb: 109, 122, 36;
+        --magenta: #b45742;
+        --magenta-rgb: 180, 87, 66;
+        --border: #c5b79f;
+        --border-strong: rgba(197, 183, 159, 1);
+        --panel-bg: rgba(244, 234, 215, 0.64);
+        --panel-strong: rgba(244, 234, 215, 0.78);
+        --modal-bg: rgba(248, 239, 224, 0.94);
+        --overlay: rgba(78, 56, 34, 0.2);
+        --input-bg: #f6eddc;
+        --canvas-fade: rgba(244, 234, 215, 0.44);
+        --scanline-color: rgba(80, 50, 20, 0.035);
+        --scanline-opacity: 0.08;
+        --footnote-color: rgba(35, 25, 18, 0.38);
+        --footnote-shadow: rgba(157, 82, 7, 0.08);
+        --toggle-bg: rgba(244, 234, 215, 0.56);
+        --toggle-border: rgba(35, 25, 18, 0.12);
+        --toggle-dot-start: #4e4740;
+        --toggle-dot-end: #6a6259;
+      }
+      body[data-theme="day"] .subline {
+        color: #7b5a2c;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: "IBM Plex Mono", "VT323", monospace;
+        letter-spacing: 0.06em;
+        cursor: none;
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+        transition:
+          background-color 0.35s ease,
+          color 0.35s ease;
+      }
+      canvas#neuralCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+        pointer-events: none;
+        filter: drop-shadow(0 0 6px rgba(var(--cyan-rgb), 0.35));
+        transition: filter 0.35s ease;
+      }
+      .scanlines {
+        pointer-events: none;
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+          to bottom,
+          var(--scanline-color),
+          var(--scanline-color) 1px,
+          transparent 2px,
+          transparent 3px
+        );
+        opacity: var(--scanline-opacity);
+        mix-blend-mode: screen;
+        z-index: 1;
+        transition: opacity 0.35s ease;
+      }
+      .cursor {
+        position: fixed;
+        width: 18px;
+        height: 18px;
+        border: 1px solid var(--cyan);
+        border-radius: 2px;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 100;
+        box-shadow: 0 0 8px rgba(0, 246, 255, 0.6);
+        mix-blend-mode: screen;
+      }
+      body[data-theme="day"] .cursor {
+        mix-blend-mode: multiply;
+      }
+      .theme-toggle {
+        position: fixed;
+        top: 22px;
+        right: 22px;
+        z-index: 3;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        border: 1px solid var(--toggle-border);
+        background: var(--toggle-bg);
+        color: var(--fg);
+        font: inherit;
+        backdrop-filter: blur(8px);
+        cursor: pointer;
+        transition:
+          border-color 0.25s ease,
+          box-shadow 0.25s ease,
+          background-color 0.35s ease,
+          color 0.35s ease;
+      }
+      .theme-toggle:hover {
+        border-color: rgba(var(--cyan-rgb), 0.45);
+        box-shadow: 0 0 14px rgba(var(--cyan-rgb), 0.16);
+      }
+      .theme-toggle-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--toggle-dot-start), var(--toggle-dot-end));
+        box-shadow: 0 0 10px rgba(var(--cyan-rgb), 0.3);
+        flex: 0 0 auto;
+      }
+      .layout {
+        position: relative;
+        z-index: 2;
+      }
+      section {
+        min-height: 80vh;
+        padding: 120px 8vw;
+      }
+      #hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 20px;
+      }
+      .hero-copy {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .eyebrow {
+        color: var(--cyan);
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        letter-spacing: 0.2em;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(32px, 4vw, 56px);
+        text-transform: uppercase;
+        line-height: 1.1;
+        color: var(--fg);
+        text-shadow: 0 0 12px rgba(0, 246, 255, 0.25);
+      }
+      .subline {
+        font-size: 1.1rem;
+        color: var(--lime);
+        opacity: 0.9;
+        min-height: 1.3em;
+        position: relative;
+      }
+      .hero-bloom {
+        opacity: 0;
+        transform: translateY(14px) scale(0.985);
+        filter: blur(8px);
+        transition:
+          opacity 0.9s ease,
+          transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+          filter 1s ease,
+          text-shadow 1s ease;
+      }
+      .hero-bloom.visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+      .hero-bloom.visible .eyebrow {
+        text-shadow: 0 0 10px rgba(var(--cyan-rgb), 0.35);
+      }
+      .hero-bloom.visible h1 {
+        text-shadow:
+          0 0 14px rgba(var(--cyan-rgb), 0.3),
+          0 0 28px rgba(var(--cyan-rgb), 0.14),
+          0 0 42px rgba(var(--fg-rgb), 0.08);
+      }
+      .hero-bloom.visible .subline {
+        text-shadow: 0 0 12px rgba(var(--lime-rgb), 0.22);
+      }
+      .intro {
+        max-width: 720px;
+        color: var(--fg);
+        opacity: 0.8;
+        line-height: 1.7;
+        text-transform: lowercase;
+      }
+      .intro-tech-reveal {
+        position: relative;
+        opacity: 0;
+        transform: translateY(10px);
+        filter: blur(4px);
+        transition:
+          opacity 0.65s ease,
+          transform 0.65s ease,
+          filter 0.65s ease;
+      }
+      .intro-tech-reveal::after {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(var(--cyan-rgb), 0.2) 45%,
+          rgba(var(--lime-rgb), 0.28) 50%,
+          transparent 55%
+        );
         transform: translateX(-108%);
+        pointer-events: none;
         opacity: 0;
       }
-      20% {
+      .intro-tech-reveal.visible {
+        opacity: 0.8;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+      .intro-tech-reveal.visible::after {
+        opacity: 1;
+        animation: introScan 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      }
+      @keyframes introScan {
+        0% {
+          transform: translateX(-108%);
+          opacity: 0;
+        }
+        20% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(108%);
+          opacity: 0;
+        }
+      }
+      .glitch:hover {
+        animation: glitch 0.35s steps(2, end) infinite;
+        text-shadow:
+          0 0 8px var(--cyan),
+          0 0 12px var(--magenta);
+      }
+      @keyframes glitch {
+        0% {
+          transform: translate(0);
+        }
+        20% {
+          transform: translate(-2px, 2px);
+        }
+        40% {
+          transform: translate(2px, -1px);
+        }
+        60% {
+          transform: translate(-1px, -2px);
+        }
+        80% {
+          transform: translate(1px, 1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+      .mission-block {
+        border: 2px solid var(--border);
+        padding: 32px;
+        max-width: 760px;
+        background: var(--panel-bg);
+        transition:
+          border-color 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+      .mission-block:hover {
+        border-color: var(--cyan);
+        box-shadow: 0 0 18px rgba(var(--cyan-rgb), 0.2);
+      }
+      .label {
+        color: var(--magenta);
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+      }
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+        margin-top: 40px;
+      }
+      .service-card {
+        border: 3px solid var(--border);
+        padding: 24px;
+        text-transform: lowercase;
+        transition:
+          border-color 0.25s ease,
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+        background: var(--panel-strong);
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        text-align: left;
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
+      }
+      .service-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg, transparent, rgba(var(--cyan-rgb), 0.08), transparent);
+        opacity: 0;
+        transition: opacity 0.25s ease;
+      }
+      .service-card:hover,
+      .service-card:focus-visible {
+        border-color: var(--cyan);
+        transform: translateY(-4px);
+        box-shadow: 0 0 14px rgba(var(--cyan-rgb), 0.25);
+      }
+      .service-card:hover::after,
+      .service-card:focus-visible::after {
         opacity: 1;
       }
-      100% {
-        transform: translateX(108%);
-        opacity: 0;
+      .service-card:focus-visible {
+        outline: none;
       }
-    }
-    .glitch:hover {
-      animation: glitch 0.35s steps(2, end) infinite;
-      text-shadow:
-        0 0 8px var(--cyan),
-        0 0 12px var(--magenta);
-    }
-    @keyframes glitch {
-      0% { transform: translate(0); }
-      20% { transform: translate(-2px, 2px); }
-      40% { transform: translate(2px, -1px); }
-      60% { transform: translate(-1px, -2px); }
-      80% { transform: translate(1px, 1px); }
-      100% { transform: translate(0); }
-    }
-    .mission-block {
-      border: 2px solid var(--border);
-      padding: 32px;
-      max-width: 760px;
-      background: var(--panel-bg);
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-    .mission-block:hover {
-      border-color: var(--cyan);
-      box-shadow: 0 0 18px rgba(var(--cyan-rgb), 0.2);
-    }
-    .label {
-      color: var(--magenta);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      font-size: 0.8rem;
-    }
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
-      margin-top: 40px;
-    }
-    .service-card {
-      border: 3px solid var(--border);
-      padding: 24px;
-      text-transform: lowercase;
-      transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-      background: var(--panel-strong);
-      position: relative;
-      overflow: hidden;
-      width: 100%;
-      text-align: left;
-      font: inherit;
-      color: inherit;
-      cursor: pointer;
-    }
-    .service-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, transparent, rgba(var(--cyan-rgb), 0.08), transparent);
-      opacity: 0;
-      transition: opacity 0.25s ease;
-    }
-    .service-card:hover,
-    .service-card:focus-visible {
-      border-color: var(--cyan);
-      transform: translateY(-4px);
-      box-shadow: 0 0 14px rgba(var(--cyan-rgb), 0.25);
-    }
-    .service-card:hover::after,
-    .service-card:focus-visible::after {
-      opacity: 1;
-    }
-    .service-card:focus-visible {
-      outline: none;
-    }
-    .service-title {
-      color: var(--cyan);
-      font-weight: 600;
-      margin-bottom: 8px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-    .service-meta {
-      color: var(--fg);
-      opacity: 0.8;
-      line-height: 1.5;
-    }
-    #contact {
-      padding-bottom: 140px;
-    }
-    .contact-block {
-      border: 2px solid var(--border);
-      padding: 32px;
-      max-width: 520px;
-      position: relative;
-    }
-    .contact-block:hover {
-      border-color: var(--lime);
-      box-shadow: 0 0 16px rgba(var(--lime-rgb), 0.3);
-    }
-    .caret {
-      display: inline-block;
-      width: 10px;
-      height: 1.1em;
-      background: var(--cyan);
-      margin-left: 6px;
-      animation: blink 1s steps(2, start) infinite;
-    }
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
-    }
-    .reveal {
-      opacity: 0;
-      transform: translateY(14px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .contact-btn {
-      margin-top: 10px;
-      padding: 10px 14px;
-      background: transparent;
-      border: 2px solid var(--cyan);
-      color: var(--fg);
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      cursor: pointer;
-      transition: border-color 0.25s ease, box-shadow 0.25s ease;
-    }
-    .contact-btn:hover {
-      border-color: var(--magenta);
-      box-shadow: 0 0 14px rgba(var(--magenta-rgb), 0.35);
-    }
-    .modal {
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: var(--overlay);
-      backdrop-filter: blur(4px);
-      z-index: 10;
-    }
-    .modal.open { display: flex; }
-    .modal-card {
-      background: var(--modal-bg);
-      border: 2px solid var(--cyan);
-      padding: 28px;
-      width: min(520px, 90vw);
-      box-shadow: 0 0 18px rgba(var(--cyan-rgb), 0.25);
-      position: relative;
-    }
-    .modal-close {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 2;
-      background: transparent;
-      border: 1px solid var(--magenta);
-      color: var(--fg);
-      padding: 6px 10px;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-    .modal-close:hover {
-      box-shadow: 0 0 12px rgba(var(--magenta-rgb), 0.4);
-    }
-    .modal h3 {
-      margin: 0 0 12px 0;
-      color: var(--cyan);
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-    .modal form {
-      display: grid;
-      gap: 14px;
-    }
-    .modal label {
-      font-size: 0.85rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--lime);
-    }
-    .modal input,
-    .modal textarea {
-      width: 100%;
-      background: var(--input-bg);
-      border: 2px solid var(--border);
-      color: var(--fg);
-      padding: 12px;
-      font-family: 'IBM Plex Mono', 'VT323', monospace;
-      letter-spacing: 0.05em;
-    }
-    .modal input:focus,
-    .modal textarea:focus {
-      outline: none;
-      border-color: var(--cyan);
-      box-shadow: 0 0 10px rgba(var(--cyan-rgb), 0.2);
-    }
-    .modal button[type="submit"] {
-      border: 2px solid var(--cyan);
-      background: transparent;
-      color: var(--fg);
-      padding: 10px 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      cursor: pointer;
-      transition: border-color 0.25s ease, box-shadow 0.25s ease;
-    }
-    .modal button[type="submit"]:hover {
-      border-color: var(--magenta);
-      box-shadow: 0 0 14px rgba(var(--magenta-rgb), 0.35);
-    }
-    .info-modal-card {
-      width: min(440px, calc(100vw - 32px));
-      padding: 22px 22px 20px;
-      border-color: rgba(var(--cyan-rgb), 0.72);
-      box-shadow:
-        0 0 20px rgba(var(--cyan-rgb), 0.18),
-        inset 0 0 0 1px rgba(var(--fg-rgb), 0.04);
-    }
-    .info-modal-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(135deg, rgba(var(--cyan-rgb), 0.08), transparent 42%),
-        linear-gradient(225deg, rgba(var(--magenta-rgb), 0.06), transparent 38%);
-      pointer-events: none;
-    }
-    .info-modal-content {
-      position: relative;
-      z-index: 1;
-    }
-    .info-modal-label {
-      margin-bottom: 10px;
-      color: var(--lime);
-      font-size: 0.75rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      opacity: 0.82;
-    }
-    .info-modal-card h3 {
-      margin: 0 0 12px 0;
-      padding-right: 72px;
-      line-height: 1.2;
-    }
-    .info-modal-copy {
-      margin: 0;
-      max-width: 34ch;
-      line-height: 1.7;
-      text-transform: none;
-      letter-spacing: 0.05em;
-      opacity: 0.9;
-    }
-    .status {
-      font-size: 0.9rem;
-      color: var(--magenta);
-      min-height: 1.2em;
-    }
-    .site-footnote {
-      position: fixed;
-      left: 8vw;
-      bottom: 18px;
-      z-index: 2;
-      font-size: 0.62rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--footnote-color);
-      text-shadow: 0 0 8px var(--footnote-shadow);
-      pointer-events: none;
-    }
-    @media (max-width: 720px) {
-      section { padding: 100px 7vw; }
-      .services-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
-      .service-card {
-        min-height: 172px;
+      .service-title {
+        color: var(--cyan);
+        font-weight: 600;
+        margin-bottom: 8px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .service-meta {
+        color: var(--fg);
+        opacity: 0.8;
+        line-height: 1.5;
+      }
+      #contact {
+        padding-bottom: 140px;
+      }
+      .contact-block {
+        border: 2px solid var(--border);
+        padding: 32px;
+        max-width: 520px;
+        position: relative;
+      }
+      .contact-block:hover {
+        border-color: var(--lime);
+        box-shadow: 0 0 16px rgba(var(--lime-rgb), 0.3);
+      }
+      .caret {
+        display: inline-block;
+        width: 10px;
+        height: 1.1em;
+        background: var(--cyan);
+        margin-left: 6px;
+        animation: blink 1s steps(2, start) infinite;
+      }
+      @keyframes blink {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        51%,
+        100% {
+          opacity: 0;
+        }
+      }
+      .reveal {
+        opacity: 0;
+        transform: translateY(14px);
+        transition:
+          opacity 0.7s ease,
+          transform 0.7s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .contact-btn {
+        margin-top: 10px;
+        padding: 10px 14px;
+        background: transparent;
+        border: 2px solid var(--cyan);
+        color: var(--fg);
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        cursor: pointer;
+        transition:
+          border-color 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+      .contact-btn:hover {
+        border-color: var(--magenta);
+        box-shadow: 0 0 14px rgba(var(--magenta-rgb), 0.35);
+      }
+      .modal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: var(--overlay);
+        backdrop-filter: blur(4px);
+        z-index: 10;
+      }
+      .modal.open {
+        display: flex;
+      }
+      .modal-card {
+        background: var(--modal-bg);
+        border: 2px solid var(--cyan);
+        padding: 28px;
+        width: min(520px, 90vw);
+        box-shadow: 0 0 18px rgba(var(--cyan-rgb), 0.25);
+        position: relative;
+      }
+      .modal-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 2;
+        background: transparent;
+        border: 1px solid var(--magenta);
+        color: var(--fg);
+        padding: 6px 10px;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+      .modal-close:hover {
+        box-shadow: 0 0 12px rgba(var(--magenta-rgb), 0.4);
+      }
+      .modal h3 {
+        margin: 0 0 12px 0;
+        color: var(--cyan);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+      .modal form {
+        display: grid;
+        gap: 14px;
+      }
+      .modal label {
+        font-size: 0.85rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--lime);
+      }
+      .modal input,
+      .modal textarea {
+        width: 100%;
+        background: var(--input-bg);
+        border: 2px solid var(--border);
+        color: var(--fg);
+        padding: 12px;
+        font-family: "IBM Plex Mono", "VT323", monospace;
+        letter-spacing: 0.05em;
+      }
+      .modal input:focus,
+      .modal textarea:focus {
+        outline: none;
+        border-color: var(--cyan);
+        box-shadow: 0 0 10px rgba(var(--cyan-rgb), 0.2);
+      }
+      .modal button[type="submit"] {
+        border: 2px solid var(--cyan);
+        background: transparent;
+        color: var(--fg);
+        padding: 10px 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        cursor: pointer;
+        transition:
+          border-color 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+      .modal button[type="submit"]:hover {
+        border-color: var(--magenta);
+        box-shadow: 0 0 14px rgba(var(--magenta-rgb), 0.35);
       }
       .info-modal-card {
-        width: min(100vw - 22px, 420px);
-        padding: 20px 18px 18px;
+        width: min(440px, calc(100vw - 32px));
+        padding: 22px 22px 20px;
+        border-color: rgba(var(--cyan-rgb), 0.72);
+        box-shadow:
+          0 0 20px rgba(var(--cyan-rgb), 0.18),
+          inset 0 0 0 1px rgba(var(--fg-rgb), 0.04);
+      }
+      .info-modal-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(var(--cyan-rgb), 0.08), transparent 42%),
+          linear-gradient(225deg, rgba(var(--magenta-rgb), 0.06), transparent 38%);
+        pointer-events: none;
+      }
+      .info-modal-content {
+        position: relative;
+        z-index: 1;
+      }
+      .info-modal-label {
+        margin-bottom: 10px;
+        color: var(--lime);
+        font-size: 0.75rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        opacity: 0.82;
       }
       .info-modal-card h3 {
-        padding-right: 64px;
+        margin: 0 0 12px 0;
+        padding-right: 72px;
+        line-height: 1.2;
       }
       .info-modal-copy {
-        max-width: none;
-        font-size: 0.94rem;
+        margin: 0;
+        max-width: 34ch;
+        line-height: 1.7;
+        text-transform: none;
+        letter-spacing: 0.05em;
+        opacity: 0.9;
       }
-      html, body { cursor: default; }
-      .cursor { display: none; }
-      .theme-toggle {
-        top: 14px;
-        right: 14px;
-        width: 26px;
-        height: 26px;
+      .status {
+        font-size: 0.9rem;
+        color: var(--magenta);
+        min-height: 1.2em;
       }
       .site-footnote {
-        left: 7vw;
-        bottom: 14px;
-        font-size: 0.56rem;
+        position: fixed;
+        left: 8vw;
+        bottom: 18px;
+        z-index: 2;
+        font-size: 0.62rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--footnote-color);
+        text-shadow: 0 0 8px var(--footnote-shadow);
+        pointer-events: none;
       }
-    }
-  </style>
-</head>
-<body>
-  <canvas id="neuralCanvas"></canvas>
-  <div class="scanlines"></div>
-  <div class="cursor" id="cursor"></div>
-  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch color theme">
-    <span class="theme-toggle-dot"></span>
-  </button>
-  <div class="site-footnote">© 2026 MI DEVELOPMENT | Data Intelligence Systems</div>
-  <main class="layout">
-    <section id="hero">
-      <div class="hero-copy hero-bloom reveal">
-        <div class="eyebrow glitch">mi development // data intelligence systems</div>
-        <h1>market &amp; pricing intelligence</h1>
-        <div class="subline" id="typewriter" aria-live="polite">_ engineered data for decisions</div>
-      </div>
-      <p class="intro intro-tech-reveal reveal">
-        MI Development builds data intelligence systems that ingest, structure, and interpret real-time market data. We
-        focus on pricing, competition, and market signals — delivering engineered insights and decision support for
-        companies that require precision beyond standard tools.&nbsp;
-      </p>
-    </section>
-
-    <section id="mission">
-      <div class="mission-block reveal">
-        <div class="label">:: purpose</div>
-        <p>we build data intelligence systems, real-time analytics pipelines, and decision support tools for pricing and market behavior.
-engineered for clarity, precision, and operational decision-making.
+      @media (max-width: 720px) {
+        section {
+          padding: 100px 7vw;
+        }
+        .services-grid {
+          grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        }
+        .service-card {
+          min-height: 172px;
+        }
+        .info-modal-card {
+          width: min(100vw - 22px, 420px);
+          padding: 20px 18px 18px;
+        }
+        .info-modal-card h3 {
+          padding-right: 64px;
+        }
+        .info-modal-copy {
+          max-width: none;
+          font-size: 0.94rem;
+        }
+        html,
+        body {
+          cursor: default;
+        }
+        .cursor {
+          display: none;
+        }
+        .theme-toggle {
+          top: 14px;
+          right: 14px;
+          width: 26px;
+          height: 26px;
+        }
+        .site-footnote {
+          left: 7vw;
+          bottom: 14px;
+          font-size: 0.56rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="neuralCanvas"></canvas>
+    <div class="scanlines"></div>
+    <div class="cursor" id="cursor"></div>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch color theme">
+      <span class="theme-toggle-dot"></span>
+    </button>
+    <div class="site-footnote">© 2026 MI DEVELOPMENT | Data Intelligence Systems</div>
+    <main class="layout">
+      <section id="hero">
+        <div class="hero-copy hero-bloom reveal">
+          <div class="eyebrow glitch">mi development // data intelligence systems</div>
+          <h1>market &amp; pricing intelligence</h1>
+          <div class="subline" id="typewriter" aria-live="polite">_ engineered data for decisions</div>
+        </div>
+        <p class="intro intro-tech-reveal reveal">
+          MI Development builds data intelligence systems that ingest, structure, and interpret real-time market data.
+          We focus on pricing, competition, and market signals — delivering engineered insights and decision support for
+          companies that require precision beyond standard tools.&nbsp;
         </p>
-        <p>data intelligence decisions</p>
-      </div>
-    </section>
+      </section>
 
-    <section id="services">
-      <div class="eyebrow glitch">system capabilities</div>
-      <h2 class="service-title">Data Intelligence System for Market Decisions</h2>
-      <div class="services-grid">
-        <button
-          class="service-card reveal"
-          type="button"
-          data-info-title="pricing intelligence"
-          data-info-copy="Live pricing analysis layer that reveals how competitors move prices and where margin pressure builds across the market."
-        >
-          <div class="service-title">pricing intelligence</div>
-          <div class="service-meta">price tracking, competitor pricing, margin signals</div>
-        </button>
-        <button
-          class="service-card reveal"
-          type="button"
-          data-info-title="market intelligence"
-          data-info-copy="Real-time market signal layer that tracks demand shifts, category movement, and competitive activity across the ecosystem."
-        >
-          <div class="service-title">market intelligence</div>
-          <div class="service-meta">market trends, demand signals, category shifts</div>
-        </button>
-      </div>
-    </section>
+      <section id="mission">
+        <div class="mission-block reveal">
+          <div class="label">:: purpose</div>
+          <p>
+            we build data intelligence systems, real-time analytics pipelines, and decision support tools for pricing
+            and market behavior. engineered for clarity, precision, and operational decision-making.
+          </p>
+          <p>data intelligence decisions</p>
+        </div>
+      </section>
 
-    <section id="contact">
-      <div class="contact-block reveal">
-        <div class="label">&gt; work with us</div>
-        <p class="glitch">ready to turn data into decisions?<span class="caret"></span></p>
-        <button class="contact-btn" id="open-contact">> connect with our team</button>
-      </div>
-    </section>
-  </main>
+      <section id="services">
+        <div class="eyebrow glitch">system capabilities</div>
+        <h2 class="service-title">Data Intelligence System for Market Decisions</h2>
+        <div class="services-grid">
+          <button
+            class="service-card reveal"
+            type="button"
+            data-info-title="pricing intelligence"
+            data-info-copy="Live pricing analysis layer that reveals how competitors move prices and where margin pressure builds across the market.">
+            <div class="service-title">pricing intelligence</div>
+            <div class="service-meta">price tracking, competitor pricing, margin signals</div>
+          </button>
+          <button
+            class="service-card reveal"
+            type="button"
+            data-info-title="market intelligence"
+            data-info-copy="Real-time market signal layer that tracks demand shifts, category movement, and competitive activity across the ecosystem.">
+            <div class="service-title">market intelligence</div>
+            <div class="service-meta">market trends, demand signals, category shifts</div>
+          </button>
+        </div>
+      </section>
 
-  <div class="modal" id="contact-modal" aria-hidden="true">
-    <div class="modal-card">
-      <button class="modal-close" id="close-contact">close</button>
-      <h3>> send message</h3>
-      <form id="contact-form">
-        <label for="name">name</label>
-        <input type="text" id="name" name="from_name" required>
+      <section id="contact">
+        <div class="contact-block reveal">
+          <div class="label">&gt; work with us</div>
+          <p class="glitch">ready to turn data into decisions?<span class="caret"></span></p>
+          <button class="contact-btn" id="open-contact">> connect with our team</button>
+        </div>
+      </section>
+    </main>
 
-        <label for="email">email</label>
-        <input type="email" id="email" name="email" required>
+    <div class="modal" id="contact-modal" aria-hidden="true">
+      <div class="modal-card">
+        <button class="modal-close" id="close-contact">close</button>
+        <h3>> send message</h3>
+        <form id="contact-form">
+          <label for="name">name</label>
+          <input type="text" id="name" name="from_name" required />
 
-        <label for="message">message</label>
-        <textarea id="message" name="message" rows="4" required></textarea>
+          <label for="email">email</label>
+          <input type="email" id="email" name="email" required />
 
-        <button type="submit">send</button>
-        <div class="status" id="status"></div>
-      </form>
-    </div>
-  </div>
+          <label for="message">message</label>
+          <textarea id="message" name="message" rows="4" required></textarea>
 
-  <div class="modal" id="capability-modal" aria-hidden="true">
-    <div class="modal-card info-modal-card">
-      <button class="modal-close" id="close-capability" type="button">close</button>
-      <div class="info-modal-content">
-        <div class="info-modal-label">intelligence layer</div>
-        <h3 id="capability-modal-title"></h3>
-        <p class="info-modal-copy" id="capability-modal-copy"></p>
+          <button type="submit">send</button>
+          <div class="status" id="status"></div>
+        </form>
       </div>
     </div>
-  </div>
 
-  <script>
-    const themes = {
-      night: {
-        canvasFade: 'rgba(0, 0, 0, 0.5)',
-        connection: [0, 246, 255],
-        flash: [195, 255, 0],
-        node: [0, 246, 255],
-        pulse: [255, 0, 200],
-        text: [195, 255, 0],
-        cursorIdle: '0 0 8px rgba(0, 246, 255, 0.6)',
-        cursorActive: '0 0 14px rgba(255, 0, 200, 0.7)'
-      },
-      day: {
-        canvasFade: 'rgba(244, 234, 215, 0.44)',
-        connection: [157, 82, 7],
-        flash: [109, 122, 36],
-        node: [157, 82, 7],
-        pulse: [180, 87, 66],
-        text: [109, 122, 36],
-        cursorIdle: '0 0 8px rgba(157, 82, 7, 0.45)',
-        cursorActive: '0 0 14px rgba(180, 87, 66, 0.55)'
+    <div class="modal" id="capability-modal" aria-hidden="true">
+      <div class="modal-card info-modal-card">
+        <button class="modal-close" id="close-capability" type="button">close</button>
+        <div class="info-modal-content">
+          <div class="info-modal-label">intelligence layer</div>
+          <h3 id="capability-modal-title"></h3>
+          <p class="info-modal-copy" id="capability-modal-copy"></p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const themes = {
+        night: {
+          canvasFade: "rgba(0, 0, 0, 0.5)",
+          connection: [0, 246, 255],
+          flash: [195, 255, 0],
+          node: [0, 246, 255],
+          pulse: [255, 0, 200],
+          text: [195, 255, 0],
+          cursorIdle: "0 0 8px rgba(0, 246, 255, 0.6)",
+          cursorActive: "0 0 14px rgba(255, 0, 200, 0.7)"
+        },
+        day: {
+          canvasFade: "rgba(244, 234, 215, 0.44)",
+          connection: [157, 82, 7],
+          flash: [109, 122, 36],
+          node: [157, 82, 7],
+          pulse: [180, 87, 66],
+          text: [109, 122, 36],
+          cursorIdle: "0 0 8px rgba(157, 82, 7, 0.45)",
+          cursorActive: "0 0 14px rgba(180, 87, 66, 0.55)"
+        }
+      };
+      const themeToggle = document.getElementById("theme-toggle");
+      let currentTheme = localStorage.getItem("mi-theme") || "night";
+      function applyTheme(theme) {
+        currentTheme = theme;
+        document.body.dataset.theme = theme;
+        localStorage.setItem("mi-theme", theme);
+        const cursorEl = document.getElementById("cursor");
+        if (cursorEl) cursorEl.style.boxShadow = themes[theme].cursorIdle;
       }
-    };
-    const themeToggle = document.getElementById('theme-toggle');
-    let currentTheme = localStorage.getItem('mi-theme') || 'night';
-    function applyTheme(theme) {
-      currentTheme = theme;
-      document.body.dataset.theme = theme;
-      localStorage.setItem('mi-theme', theme);
-      const cursorEl = document.getElementById('cursor');
-      if (cursorEl) cursorEl.style.boxShadow = themes[theme].cursorIdle;
-    }
-    applyTheme(currentTheme);
+      applyTheme(currentTheme);
 
-    const canvas = document.getElementById('neuralCanvas');
-    const ctx = canvas.getContext('2d');
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-
-    const nodeCount = 80;
-    const nodes = [];
-    const codeFragments = ["function sync()", "agent.run()", "lambda(x)", "neuron.fire()", "if(signal){pulse();}", "compute()", "link(nodeA, nodeB)", "matrix.compose()", "vector.normalize()"];
-
-    function rand(min, max) { return Math.random() * (max - min) + min; }
-
-    for (let i = 0; i < nodeCount; i++) {
-      nodes.push({
-        x: rand(0, width),
-        y: rand(0, height),
-        vx: rand(-0.2, 0.2),
-        vy: rand(-0.2, 0.2),
-        pulse: Math.random(),
-        text: codeFragments[Math.floor(rand(0, codeFragments.length))],
-        textLife: rand(240, 480)
-      });
-    }
-
-    function resizeCanvas() {
-      width = window.innerWidth;
-      height = window.innerHeight;
+      const canvas = document.getElementById("neuralCanvas");
+      const ctx = canvas.getContext("2d");
+      let width = window.innerWidth;
+      let height = window.innerHeight;
       canvas.width = width;
       canvas.height = height;
-    }
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(resizeCanvas, 120);
-    });
 
-    function draw() {
-      const palette = themes[currentTheme];
-      ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = palette.canvasFade;
-      ctx.fillRect(0, 0, width, height);
+      const nodeCount = 80;
+      const nodes = [];
+      const codeFragments = [
+        "function sync()",
+        "agent.run()",
+        "lambda(x)",
+        "neuron.fire()",
+        "if(signal){pulse();}",
+        "compute()",
+        "link(nodeA, nodeB)",
+        "matrix.compose()",
+        "vector.normalize()"
+      ];
 
-      // connections
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const a = nodes[i];
-          const b = nodes[j];
-          const dx = a.x - b.x;
-          const dy = a.y - b.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 160) {
-            const alpha = 1 - dist / 160;
-            ctx.strokeStyle = `rgba(${palette.connection.join(', ')}, ${alpha * 0.35})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.stroke();
-            if (Math.random() < 0.002) {
-              ctx.strokeStyle = `rgba(${palette.flash.join(', ')}, ${alpha})`;
-              ctx.lineWidth = 2;
+      function rand(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      for (let i = 0; i < nodeCount; i++) {
+        nodes.push({
+          x: rand(0, width),
+          y: rand(0, height),
+          vx: rand(-0.2, 0.2),
+          vy: rand(-0.2, 0.2),
+          pulse: Math.random(),
+          text: codeFragments[Math.floor(rand(0, codeFragments.length))],
+          textLife: rand(240, 480)
+        });
+      }
+
+      function resizeCanvas() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+      }
+      let resizeTimeout;
+      window.addEventListener("resize", () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(resizeCanvas, 120);
+      });
+
+      function draw() {
+        const palette = themes[currentTheme];
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = palette.canvasFade;
+        ctx.fillRect(0, 0, width, height);
+
+        // connections
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const a = nodes[i];
+            const b = nodes[j];
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 160) {
+              const alpha = 1 - dist / 160;
+              ctx.strokeStyle = `rgba(${palette.connection.join(", ")}, ${alpha * 0.35})`;
+              ctx.lineWidth = 1;
               ctx.beginPath();
               ctx.moveTo(a.x, a.y);
               ctx.lineTo(b.x, b.y);
               ctx.stroke();
+              if (Math.random() < 0.002) {
+                ctx.strokeStyle = `rgba(${palette.flash.join(", ")}, ${alpha})`;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+                ctx.stroke();
+              }
             }
           }
         }
+
+        // nodes and pulses
+        nodes.forEach((node) => {
+          node.x += node.vx;
+          node.y += node.vy;
+          if (node.x < 0 || node.x > width) node.vx *= -1;
+          if (node.y < 0 || node.y > height) node.vy *= -1;
+
+          ctx.fillStyle = `rgba(${palette.node.join(", ")}, 0.8)`;
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, 2, 0, Math.PI * 2);
+          ctx.fill();
+
+          const pulseSize = 2 + Math.sin(Date.now() / 400 + node.pulse * 10) * 2;
+          ctx.strokeStyle = `rgba(${palette.pulse.join(", ")}, 0.3)`;
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, pulseSize, 0, Math.PI * 2);
+          ctx.stroke();
+
+          node.textLife -= 1;
+          if (node.textLife < 0) {
+            node.text = codeFragments[Math.floor(rand(0, codeFragments.length))];
+            node.textLife = rand(240, 480);
+          }
+          if (node.textLife < 140) {
+            const textAlpha = Math.min(0.4, (node.textLife / 140) * 0.4);
+            ctx.fillStyle = `rgba(${palette.text.join(", ")}, ${textAlpha})`;
+            ctx.font = '12px "IBM Plex Mono", monospace';
+            ctx.fillText(node.text, node.x + 6, node.y - 6);
+          }
+        });
       }
-
-      // nodes and pulses
-      nodes.forEach(node => {
-        node.x += node.vx;
-        node.y += node.vy;
-        if (node.x < 0 || node.x > width) node.vx *= -1;
-        if (node.y < 0 || node.y > height) node.vy *= -1;
-
-        ctx.fillStyle = `rgba(${palette.node.join(', ')}, 0.8)`;
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, 2, 0, Math.PI * 2);
-        ctx.fill();
-
-        const pulseSize = 2 + Math.sin(Date.now() / 400 + node.pulse * 10) * 2;
-        ctx.strokeStyle = `rgba(${palette.pulse.join(', ')}, 0.3)`;
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, pulseSize, 0, Math.PI * 2);
-        ctx.stroke();
-
-        node.textLife -= 1;
-        if (node.textLife < 0) {
-          node.text = codeFragments[Math.floor(rand(0, codeFragments.length))];
-          node.textLife = rand(240, 480);
+      let lastTime = 0;
+      const fps = 40;
+      const frameInterval = 1000 / fps;
+      function animate(timestamp) {
+        if (!lastTime) lastTime = timestamp;
+        const delta = timestamp - lastTime;
+        if (delta > frameInterval) {
+          lastTime = timestamp - (delta % frameInterval);
+          draw();
         }
-        if (node.textLife < 140) {
-          const textAlpha = Math.min(0.4, (node.textLife / 140) * 0.4);
-          ctx.fillStyle = `rgba(${palette.text.join(', ')}, ${textAlpha})`;
-          ctx.font = '12px "IBM Plex Mono", monospace';
-          ctx.fillText(node.text, node.x + 6, node.y - 6);
-        }
-      });
-    }
-    let lastTime = 0;
-    const fps = 40;
-    const frameInterval = 1000 / fps;
-    function animate(timestamp) {
-      if (!lastTime) lastTime = timestamp;
-      const delta = timestamp - lastTime;
-      if (delta > frameInterval) {
-        lastTime = timestamp - (delta % frameInterval);
-        draw();
+        requestAnimationFrame(animate);
       }
       requestAnimationFrame(animate);
-    }
-    requestAnimationFrame(animate);
 
-    const typewriter = document.getElementById('typewriter');
-    const phrase = '_ engineered data for decisions';
-    let idx = 0;
-    function type() {
-      typewriter.textContent = phrase.slice(0, idx) + (idx % 2 === 0 ? '|' : '');
-      idx++;
-      if (idx <= phrase.length) {
-        setTimeout(type, 40);
-      } else {
-        typewriter.textContent = phrase;
+      const typewriter = document.getElementById("typewriter");
+      const phrase = "_ engineered data for decisions";
+      let idx = 0;
+      function type() {
+        typewriter.textContent = phrase.slice(0, idx) + (idx % 2 === 0 ? "|" : "");
+        idx++;
+        if (idx <= phrase.length) {
+          setTimeout(type, 40);
+        } else {
+          typewriter.textContent = phrase;
+        }
       }
-    }
-    setTimeout(type, 300);
+      setTimeout(type, 300);
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+      document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+
+      const cursor = document.getElementById("cursor");
+      window.addEventListener("mousemove", (e) => {
+        cursor.style.left = e.clientX + "px";
+        cursor.style.top = e.clientY + "px";
       });
-    }, { threshold: 0.15 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+      window.addEventListener("mousedown", () => (cursor.style.boxShadow = themes[currentTheme].cursorActive));
+      window.addEventListener("mouseup", () => (cursor.style.boxShadow = themes[currentTheme].cursorIdle));
+      themeToggle.addEventListener("click", () => {
+        applyTheme(currentTheme === "night" ? "day" : "night");
+      });
 
-    const cursor = document.getElementById('cursor');
-    window.addEventListener('mousemove', e => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-    });
-    window.addEventListener('mousedown', () => cursor.style.boxShadow = themes[currentTheme].cursorActive);
-    window.addEventListener('mouseup', () => cursor.style.boxShadow = themes[currentTheme].cursorIdle);
-    themeToggle.addEventListener('click', () => {
-      applyTheme(currentTheme === 'night' ? 'day' : 'night');
-    });
+      function openModal(modalEl) {
+        modalEl.classList.add("open");
+        modalEl.setAttribute("aria-hidden", "false");
+      }
 
-    function openModal(modalEl) {
-      modalEl.classList.add('open');
-      modalEl.setAttribute('aria-hidden', 'false');
-    }
+      function closeModal(modalEl) {
+        modalEl.classList.remove("open");
+        modalEl.setAttribute("aria-hidden", "true");
+      }
 
-    function closeModal(modalEl) {
-      modalEl.classList.remove('open');
-      modalEl.setAttribute('aria-hidden', 'true');
-    }
-
-    document.querySelectorAll('.modal').forEach(modalEl => {
-      modalEl.addEventListener('click', e => {
-        if (e.target === modalEl) {
-          closeModal(modalEl);
-          if (modalEl === document.getElementById('contact-modal')) {
-            document.getElementById('status').textContent = '';
+      document.querySelectorAll(".modal").forEach((modalEl) => {
+        modalEl.addEventListener("click", (e) => {
+          if (e.target === modalEl) {
+            closeModal(modalEl);
+            if (modalEl === document.getElementById("contact-modal")) {
+              document.getElementById("status").textContent = "";
+            }
           }
-        }
-      });
-    });
-
-    document.addEventListener('keydown', e => {
-      if (e.key !== 'Escape') return;
-      document.querySelectorAll('.modal.open').forEach(modalEl => closeModal(modalEl));
-      document.getElementById('status').textContent = '';
-    });
-
-    const capabilityModal = document.getElementById('capability-modal');
-    const capabilityTitle = document.getElementById('capability-modal-title');
-    const capabilityCopy = document.getElementById('capability-modal-copy');
-    document.querySelectorAll('.service-card').forEach(card => {
-      card.addEventListener('click', () => {
-        capabilityTitle.textContent = `> ${card.dataset.infoTitle}`;
-        capabilityCopy.textContent = card.dataset.infoCopy;
-        openModal(capabilityModal);
-      });
-    });
-    document.getElementById('close-capability').addEventListener('click', () => closeModal(capabilityModal));
-
-    // Contact modal + EmailJS
-    emailjs.init("vIISw4m27ZLNjGiqT");
-    const modal = document.getElementById('contact-modal');
-    const openBtn = document.getElementById('open-contact');
-    const closeBtn = document.getElementById('close-contact');
-    const statusEl = document.getElementById('status');
-    openBtn.addEventListener('click', () => {
-      openModal(modal);
-    });
-    closeBtn.addEventListener('click', () => {
-      closeModal(modal);
-      statusEl.textContent = '';
-    });
-
-    document.getElementById('contact-form').addEventListener('submit', function(event) {
-      event.preventDefault();
-      statusEl.textContent = 'sending message...';
-      
-      // get site name
-      let input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = 'site_name';
-      input.value = window.location.hostname;
-      this.appendChild(input);
-      
-      emailjs.sendForm('mistudio', 'mitemplate', this)
-        .then(function(response) {
-          console.log('SUCCESS!', response.status, response.text);
-          statusEl.textContent = 'message sent. we will respond shortly.';
-        
-        // auto-reply to client
-        emailjs.sendForm('mistudio', 'client_reply', this);
-        
-          event.target.reset();
-        }, function(error) {
-          console.log('FAILED...', error);
-          statusEl.textContent = 'message not sent. retry.';
         });
-    });
-  </script>
-</body>
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key !== "Escape") return;
+        document.querySelectorAll(".modal.open").forEach((modalEl) => closeModal(modalEl));
+        document.getElementById("status").textContent = "";
+      });
+
+      const capabilityModal = document.getElementById("capability-modal");
+      const capabilityTitle = document.getElementById("capability-modal-title");
+      const capabilityCopy = document.getElementById("capability-modal-copy");
+      document.querySelectorAll(".service-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          capabilityTitle.textContent = `> ${card.dataset.infoTitle}`;
+          capabilityCopy.textContent = card.dataset.infoCopy;
+          openModal(capabilityModal);
+        });
+      });
+      document.getElementById("close-capability").addEventListener("click", () => closeModal(capabilityModal));
+
+      // Contact modal + EmailJS
+      emailjs.init("vIISw4m27ZLNjGiqT");
+      const modal = document.getElementById("contact-modal");
+      const openBtn = document.getElementById("open-contact");
+      const closeBtn = document.getElementById("close-contact");
+      const statusEl = document.getElementById("status");
+      openBtn.addEventListener("click", () => {
+        openModal(modal);
+      });
+      closeBtn.addEventListener("click", () => {
+        closeModal(modal);
+        statusEl.textContent = "";
+      });
+
+      document.getElementById("contact-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        statusEl.textContent = "sending message...";
+
+        // get site name
+        let input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "site_name";
+        input.value = window.location.hostname;
+        this.appendChild(input);
+
+        emailjs.sendForm("mistudio", "mitemplate", this).then(
+          function (response) {
+            console.log("SUCCESS!", response.status, response.text);
+            statusEl.textContent = "message sent. we will respond shortly.";
+
+            event.target.reset();
+          },
+          function (error) {
+            console.log("FAILED...", error);
+            statusEl.textContent = "message not sent. retry.";
+          }
+        );
+      });
+    </script>
+  </body>
 </html>
